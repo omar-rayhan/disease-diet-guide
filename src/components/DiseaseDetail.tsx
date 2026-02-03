@@ -1,5 +1,7 @@
 import { ArrowLeft, Check, X, Lightbulb } from "lucide-react";
 import { Disease } from "@/data/diseases";
+import { FavoriteButton, useFavorites } from "./Favorites";
+import MealPlanner from "./MealPlanner";
 
 interface DiseaseDetailProps {
   disease: Disease;
@@ -7,6 +9,8 @@ interface DiseaseDetailProps {
 }
 
 const DiseaseDetail = ({ disease, onBack }: DiseaseDetailProps) => {
+  const { isFavorite, toggleFavorite } = useFavorites();
+
   return (
     <div className="animate-fade-in">
       {/* Back button */}
@@ -20,17 +24,29 @@ const DiseaseDetail = ({ disease, onBack }: DiseaseDetailProps) => {
 
       {/* Header */}
       <div className="bg-card rounded-2xl border border-border p-8 mb-8">
-        <div className="flex items-start gap-6">
-          <div className="text-6xl">{disease.icon}</div>
-          <div className="flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              {disease.name} Diet Plan
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-3xl">
-              {disease.description}
-            </p>
+        <div className="flex items-start justify-between">
+          <div className="flex items-start gap-6">
+            <div className="text-6xl">{disease.icon}</div>
+            <div className="flex-1">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+                {disease.name} Diet Plan
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-3xl">
+                {disease.description}
+              </p>
+            </div>
           </div>
+          <FavoriteButton
+            diseaseId={disease.id}
+            isFavorite={isFavorite(disease.id)}
+            onToggle={toggleFavorite}
+          />
         </div>
+      </div>
+
+      {/* Meal Planner */}
+      <div className="mb-8">
+        <MealPlanner disease={disease} />
       </div>
 
       {/* Main content grid */}
